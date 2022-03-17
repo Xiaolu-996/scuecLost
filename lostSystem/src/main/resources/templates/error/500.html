@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{css/me.css}">
+    <link rel="stylesheet" th:href="@{css/animate.compat.css}">
+
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(1)" class=" ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+
+
+</nav>
+
+<main class="m-large m-container-small animated fadeInLeft m-huge">
+    <div class="ui error segment m-huge">
+        <h1 class="ui header red">500</h1>
+        <p style="color: #9c3328">服务器出错！</p>
+    </div>
+</main>
+
+<!-- 底部 -->
+<footer th:replace="_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+
+</footer>
+</body>
+</html>

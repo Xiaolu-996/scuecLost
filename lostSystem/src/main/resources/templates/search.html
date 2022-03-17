@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" th:href="@{css/me.css}">
+    <link rel="stylesheet" th:href="@{css/animate.compat.css}">
+</head>
+<body>
+
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(0)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+</nav>
+
+<!-- 中间内容 -->
+<main class="m-large m-container-small animated fadeInRight">
+    <div class="ui container">
+        <!-- header -->
+        <div class="ui  top attached segment">
+            <div class="ui middle aligned two column stackable grid">
+                <div class="column">
+                    <h2 class="ui blue header">搜索结果</h2>
+                </div>
+                <div class="right aligned column ">
+                    共<h2 class="ui red header m-inline-block" th:text="${page.totalElements}"></h2>个
+                </div>
+            </div>
+        </div>
+
+
+        <div class="ui top attached segment">
+            <div class="ui padded vertical m-large segment" th:each="news : ${page.content}">
+                <div class="ui mobile reversed grid">
+                    <div class=" eleven wide column">
+                        <h3 class="ui header">
+                            <a href="" class="m-black" th:href="@{/news/{id}(id=${news.id})}" th:text="${news.title}"
+                               target="_blank"></a>
+                        </h3>
+                        <p class="m-line" th:text="${news.description}"></p>
+                        <div class="ui grid">
+                            <div class="eleven wide column ">
+                                <div class="ui mini horizontal link list ">
+                                    <div class="item">
+                                        <img src="/static/images/cg1.png" alt="" th:src="@{${news.user.avatar}}"
+                                             class="ui avatar image img-tiny">
+                                        <div class="content">
+                                            <a href="" class=" header" th:text="${news.user.nickname}"></a>
+                                        </div>
+                                    </div>
+                                    <div class="item ">
+                                        <i class="calendar icon"></i><span
+                                            th:text="${#dates.format(news.updateTime,'yyyy-MM-dd')}"></span>
+                                    </div>
+                                    <div class="item">
+                                        <i class="eye icon"></i><span th:text="${news.views}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right aligned five wide column">
+                                <a href="" target="_blank" class="ui label basic red"
+                                   th:text="${news.type.name}"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="five wide column">
+                        <a href="" th:href="@{/news/{id}(id=${news.id})}" target="_blank">
+                            <img src="../static/images/cg1.png" alt="" th:src="@{${news.firstPicture}}"
+                                 class="ui rounded image img-style">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="ui bottom attached segment">
+            <div class="ui middle aligned two column grid" th:if="${page.totalPages}>1">
+                <div class="column">
+                    <a href="" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class=" ui teal button">上一页</a>
+                </div>
+                <div class="right aligned column ">
+                    <a href="" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class=" ui teal button">下一页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- 底部 -->
+<footer th:replace="_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+
+
+</body>
+</html>

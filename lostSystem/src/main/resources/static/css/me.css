@@ -1,0 +1,160 @@
+body {
+    background: url("../images/wormz.png");
+}
+
+.m-mini {
+    padding-top: 0.3em !important;
+    padding-bottom: 0.3em !important;
+}
+
+.m-tiny {
+    padding-left: 0.5em !important;
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+.m-massive {
+    padding-top: 4em !important;
+    padding-bottom: 4em !important;
+}
+
+.m-large {
+    padding-top: 2em !important;
+    padding-bottom: 2em !important;
+}
+
+.m-huge {
+    padding-top: 5em !important;
+    padding-bottom: 5em !important;
+}
+
+.m-padded-lr {
+    padding-left: 4em !important;
+    padding-right: 4em !important;
+}
+
+
+/* display */
+.m-inline-block {
+    display: inline-block !important;
+}
+
+.m-container {
+    max-width: 72em !important;
+    margin: auto !important;
+}
+
+.m-container-small {
+    max-width: 60em !important;
+    margin: auto !important;
+}
+
+
+/* margin */
+.m-margin-tiny {
+    margin-top: 0.3em !important;
+    margin-left: 0.5em !important;
+    margin-right: 0.5em !important;
+
+}
+
+.m-top-large {
+    margin-top: 2em !important;
+}
+
+
+.m-big {
+    margin: 1em !important;
+}
+
+
+/* opacity */
+.m-opacity-tiny {
+    opacity: 0.5 !important;
+}
+
+.m-opacity-mid {
+    opacity: 0.8 !important;
+}
+
+
+/* style */
+.img-style {
+    width: 180px;
+    height: 120px;
+}
+
+.img-tiny {
+    width: 40px;
+    height: 40px;
+}
+
+.img-mini {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* text */
+.m-text {
+    font-weight: 300 !important;
+    letter-spacing: 1px !important;
+    line-height: 1.8;
+}
+
+.m-text-p {
+    font-weight: 300 !important;
+    letter-spacing: 1px !important;
+    line-height: 1.8;
+    font-size: .8em;
+}
+
+.m-line {
+    line-height: 1.8;
+}
+
+/* color */
+.m-black {
+    color: black;
+}
+
+.m-blue {
+    color: #00a8c6;
+}
+
+/* position */
+.m-right-top {
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.m-mobile-show {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+    .m-mobile-hide {
+        display: none !important;
+    }
+
+    .m-mobile-show {
+        display: block !important;
+    }
+}
+
+
+.m-shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* positon */
+.m-fixed {
+    position: fixed;
+    z-index: 10 !important;
+}
+
+.m-right-bottom {
+    bottom: 200px !important;
+    right: 0 !important;
+}

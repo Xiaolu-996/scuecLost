@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/animate.min.css">
+
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <link rel="stylesheet" href="../../static/css/animate.compat.css">
+   
+</head>
+<body>
+    <!-- 导航 -->
+    <nav th:replace="admin/_fragments :: menu(1)" class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInUp">
+    </nav>
+
+    <!-- 二级导航 -->
+    <div class="ui attached secondary pointing menu m-container animated fadeInUp">
+        <a href="" th:href="@{/admin/news/input}" class="item blue">发布</a>
+        <a href="" th:href="@{/admin/news}" class="active blue item">列表</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <!-- 中间内容 -->
+    <main class="m-large m-container animated fadeInUp">
+       <div class="ui container">
+            <div  class="ui segment form">
+                <input type="hidden" name="page" >
+                <div class="inline fields">
+                    <div class="field">
+                        <input type="text" name="title" placeholder="标题"> 
+                    </div>
+                    <div class="field">
+                        <div class="ui labeled action input">
+                        <div class="ui type selection dropdown">
+                            <input type="hidden" name="typeId">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">分类</div>
+                            <div class="menu">
+                                <div th:each="type : ${types}" class="item" th:data-value="${type.id}" th:text="${type.name}">国际</div>
+                                <!--/*-->
+                                <div class="item" data-value="2">国际</div>
+                                <div class="item" data-value="3">国际</div>
+                                <!--*/-->
+                            </div>
+                        </div>
+                        </div>
+                        <button id="clear-btn" class="ui compact button teal ">清除</button>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="recommend" name="recommend">
+                            <label for="recommend">紧急发布</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        
+                        <button type="button" id="search-btn" class="ui blue basic button">
+                            <i class="search icon"></i>
+                            搜索</button>
+                    </div>
+                </div>
+            </di>
+            <div id="table-container">
+            <table th:fragment="newsList" class="ui compact blue table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>标题</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>紧急</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="news,iterStat: ${page.content}">
+                        <td th:text="${iterStat.count}">1</td>
+                        <td th:text="${news.title}">史蒂夫</td>
+                        <td th:text="${news.type.name}">国际</td>
+                        <td th:text="${news.published} ? '发布':'草稿'">草稿</td>
+                        <td th:text="${news.recommend} ? '是':'否'">是</td>
+                        <td th:text="${news.updateTime}">14点11分</td>
+                        <td>
+                            <a href="" th:href="@{/admin/news/{id}/input(id=${news.id})}" class="ui mini blue button">编辑</a>
+                            <a href="" th:href="@{/admin/news/{id}/delete(id=${news.id})}" class="ui mini red button">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <br>
+                <tfoot>
+                    <tr>
+                        <th colspan="7">
+                            <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+
+                                <a onclick="page(this)" th:attr="data-page=${page.number}-1" class="item " th:unless="${page.first}">上一页</a>
+                                <a onclick="page(this)" th:attr="data-page=${page.number}+1" class="item " th:unless="${page.last}">下一页</a>
+                              </div>
+
+                              <a href="" th:href="@{/admin/news/input}" class="ui purple right floated button">新增</a>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+            </div>
+       </div>
+       
+
+       </div>
+        <div class="ui success message" th:unless="${#strings.isEmpty(msg)}" >
+            <i class="close icon"></i>
+            <p th:text="${msg}"></p>
+
+        </div>
+
+    </main>
+
+    <br>
+    <br>
+    <br>
+    
+
+    <!-- 底部 -->
+    <footer th:replace="admin/_fragments :: footer"  class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+        <div class="ui center aligned container">
+            <div class="ui secondary divided stackable grid">
+                <div class="three wide column">
+                        <img src="../../static/images/gdpu.jpg" class="ui rounded image" alt="" style="width: 150px;">
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui purple header">最新新闻</h4>
+                    <div class="ui link list">
+                        <a href="" class="item">国家大事</a>
+                        <a href="" class="item">校园趣闻</a>
+                        <a href="" class="item">日常</a>
+                    </div>
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui purple header">联系小编</h4>
+                    <div class="ui link list">
+                        <a href="" class="item">1135848912@qq.com</a>
+                        <a href="" class="item">广药五栋</a>
+
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <h4 class="ui purple header">GDPU NEWS</h4>
+                    <a href="" class="item">这是一个分享日常生活新闻，国家新闻的网站</a>
+                </div>
+            </div>
+
+            <h3 class="ui horizontal black divider">splict </h3>
+            <h5 class="ui grey header">Copyright @2020-2021 GDPU NEWS Designed By Retroxxx</h5>
+        </div>
+
+
+
+
+    </footer>
+
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script src="../../static/js/semantic.min.js"></script>
+    <script src="../../static/lib/editormd/editormd.min.js"></script>
+    <!--/*/</th:block>/*/-->
+    <script>
+        $('.menu.toggle').click(function(){
+            $('.m-item').toggleClass('m-mobile-hide');
+
+        });
+        $('.ui.dropdown').dropdown({
+            on:'hover'
+        });
+        function page(obj) {
+            $("[name='page']").val($(obj).data("page"));
+            loaddata();
+
+        }
+
+
+        $("#search-btn").click(function () {
+            $("[name='page']").val(0);
+            loaddata();
+        });
+
+        $('#clear-btn')
+            .on('click', function() {
+                $('.ui.type.dropdown')
+                    .dropdown('clear')
+                ;
+            })
+        ;
+        //消息提示关闭初始化
+        $('.message .close')
+            .on('click', function () {
+                $(this)
+                    .closest('.message')
+                    .transition('fade');
+            });
+
+        function loaddata() {
+            $("#table-container").load(/*[[@{/admin/news/search}]]*/"/admin/news/search",{
+                title : $("[name='title']").val(),
+                typeId : $("[name='typeId']").val(),
+                recommend : $("[name='recommend']").prop('checked'),
+                page : $("[name='page']").val()
+            });
+        }
+
+
+   
+    </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物发布</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <link rel="stylesheet" href="../../static/css/animate.compat.css">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="admin/_fragments :: menu(0)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+</nav>
+
+<!-- 二级导航 -->
+<div class="ui attached secondary pointing menu m-container-small animated fadeInDown">
+    <a href="" th:href="@{/admin/news/input}" class="item active blue">发布</a>
+    <a href="" th:href="@{/admin/news}" class=" item">列表</a>
+</div>
+
+
+<!-- 中间内容 -->
+<main class="m-large m-container-small animated fadeInUp">
+    <div class="ui container">
+        <form id="news-form" th:object="${news}" th:action="@{/admin/news}" method="post" class="ui form">
+            <input type="hidden" name="published">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <input type="text" name="title" placeholder="标题" th:value="*{title}">
+                </div>
+            </div>
+
+            <div class="required field">
+                <div id="md-content" style="z-index: 1 !important;">
+                    <textarea name="content" placeholder="新闻内容" style="display: none" th:text="*{content}">
+                    </textarea>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="required field">
+                    <div class="ui left labeled basic input">
+                        <label class="ui purple basic label">
+                            <i class="folder open outline icon"></i>
+                            分类</label>
+                        <div class="ui fluid selection dropdown">
+                            <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">失物分类</div>
+                            <div class="menu">
+                                <div th:each="type : ${types}" th:data-value="${type.id}" th:text="${type.name}"
+                                     class="item" data-value="1">国际要闻
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui right labeled basic input">
+                        <label class="ui purple basic label">
+                            <i class="tags icon"></i>
+                            地点</label>
+                        <div class="ui tag fluid multiple search selection dropdown">
+                            <input type="hidden" name="tagIds" th:value="*{tagIds}">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">失物地点</div>
+                            <div class="menu">
+                                <div th:each="tag : ${tags}" th:data-value="${tag.id}" th:text="${tag.name}"
+                                     class="item" data-value="1">java
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="required field">
+                <div class="ui left labeled input">
+                    <label class="ui purple label">首图</label>
+                    <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="图片引用地址">
+                </div>
+            </div>
+
+            <div class="required field">
+                <textarea name="description" th:text="*{description}" placeholder="失物概述..." maxlength="200"></textarea>
+            </div>
+
+            <div class="inline fields">
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="recommend" name="recommend" checked th:checked="*{recommend}"
+                               class="hidden">
+                        <label for="recommend">紧急</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="comment" th:checked="*{comment}" name="comment" class="hidden">
+                        <label for="comment">评论</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui error message"></div>
+            <div class="ui right aligned container">
+                <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                <button type="button" id="save-btn" class="ui green button">保存</button>
+                <button type="button" id="publish-btn" class="ui orange button">发布</button>
+            </div>
+
+        </form>
+    </div>
+
+
+</main>
+
+<br>
+<br>
+<br>
+
+<!-- 底部 -->
+<footer th:replace="admin/_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+</footer>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="../../static/js/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    //初始化Markdown编辑器
+    var contentEditor;
+    $(function () {
+        contentEditor = editormd("md-content", {
+            width: "100%",
+            height: 640,
+            syncScrolling: "single",
+//        path    : "../static/lib/editormd/lib/"
+            path: "/lib/editormd/lib/"
+        });
+    });
+
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+
+    });
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.tag.dropdown')
+        .dropdown({
+            allowAdditions: true
+
+        });
+    $('#save-btn').click(function () {
+        $('[name="published"]').val(false);
+        $('#news-form').submit();
+    });
+    $('#publish-btn').click(function () {
+        $('[name="published"]').val(true);
+        $('#news-form').submit();
+    });
+
+
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'title',
+                rules: [{
+                    type: 'empty',
+                    prompt: '标题：请输入新闻标题'
+                }]
+            },
+            firstPicture: {
+                identifier: 'firstPicture',
+                rules: [{
+                    type: 'empty',
+                    prompt: '图片：请输入图片引用地址'
+                }]
+            },
+            content: {
+                identifier: 'content',
+                rules: [{
+                    type: 'empty',
+                    prompt: '图片：请输入图片引用地址'
+                }]
+            },
+            typeId: {
+                identifier: 'typeId',
+                rules: [{
+                    type: 'empty',
+                    prompt: '图片：请输入图片引用地址'
+                }]
+            },
+            description: {
+                identifier: 'description',
+                rules: [{
+                    type: 'empty',
+                    prompt: '概述：请输入新闻概述'
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>

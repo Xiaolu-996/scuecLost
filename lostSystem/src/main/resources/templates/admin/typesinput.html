@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类添加</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css">
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <link rel="stylesheet" href="../../static/css/animate.compat.css">
+</head>
+<body>
+<!-- 导航 -->
+<nav th:replace="admin/_fragments :: menu(0)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+</nav>
+
+
+<!-- 中间内容 -->
+<br>
+<br>
+<br>
+
+<main class="m-large m-container-small animated fadeInUp">
+    <div class="ui container">
+        <h2 class="ui header blue" th:text="${msg}"></h2>
+        <form action="" method="post" th:object="${type}"
+              th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})}" class="ui form">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class="field">
+                <div class="ui left labeled input">
+                    <label class="ui purple label">名称</label>
+                    <input type="text" name="name" placeholder="分类名称" th:value="*{name}">
+                </div>
+            </div>
+            <div class="ui error message"></div>
+
+            <!--/*/
+    <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
+      <i class="close icon"></i>
+      <div class="header">验证失败</div>
+      <p th:errors="*{name}">提交信息不符合规则</p>
+    </div>
+     /*/-->
+            <div class="ui right aligned container">
+                <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+
+                <button class="ui submit orange button">提交</button>
+            </div>
+        </form>
+    </div>
+</main>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<!-- 底部 -->
+<footer th:replace="admin/_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+</footer>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="../../static/js/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+
+    });
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            name: {
+                identifier: 'name1',
+                rules: [{
+                    type: 'empty',
+                    prompt: '名称：请输入新增分类名称'
+                }]
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>

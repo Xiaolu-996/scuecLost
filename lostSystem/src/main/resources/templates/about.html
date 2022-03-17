@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于SCUEC</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <link rel="stylesheet" href="/css/animate.compat.css">
+    <link rel="stylesheet" href="/css/me.css">
+</head>
+
+
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(5)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+</nav>
+
+<!-- 中间内容 -->
+<main class="m-large m-container-small animated fadeInLeft animated fadeIn">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eleven wide column">
+                <div class="ui segment">
+                    <img src="https://img0.baidu.com/it/u=3942738622,3508369842&fm=26&fmt=auto&gp=0.jpg" alt=""
+                         class="ui rounded image">
+                </div>
+            </div>
+            <div class="five wide column">
+                <div class="ui top attached segment">
+                    <div class="ui header">关于SCUEC</div>
+                </div>
+                <div class="ui attached segment">
+                    <p class="m-text-p">
+                        中南民族大学位于湖北省武汉市，是中华人民共和国国家民族事务委员会直属高校，为中国“少数民族骨干计划”资格高校、全国深化创新创业教育改革示范高校、中国高校行星科学联盟、湖北省“国内一流大学建设高校”，是中华人民共和国国家民族事务委员会、教育部、中国科学院、湖北省人民政府、武汉市人民政府五方共建高校。
+                        中南民族大学是一所直属国家民族事务委员会的综合性普通高等院校, 坐落于白云黄鹤的故乡——武汉南湖之滨
+                    </p>
+                </div>
+                <div class="ui attached segment">
+                    <a href="https://www.scuec.edu.cn/">中南民族大学官网</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- 底部 -->
+<footer th:replace="_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+</footer>
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+
+
+</body>
+</html>

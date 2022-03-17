@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全部失物</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <link rel="stylesheet" href="/static/css/animate.compat.css">
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/me.css">
+</head>
+
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(3)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInUp">
+</nav>
+
+<!-- 中间内容 -->
+<main class="m-large m-container-small animated fadeInUp">
+    <div class="ui container">
+        <!-- header -->
+        <div class="ui padded top attached segment">
+            <div class="ui middle aligned two column stackable grid">
+                <div class="column">
+                    <h2 class="ui blue header">全部失物</h2>
+                </div>
+                <div class="right aligned column ">
+                    共 <h2 class="ui red header m-inline-block" th:text="${newscount}"></h2>个
+                </div>
+            </div>
+        </div>
+
+        <th:block th:each="item : ${holemap}">
+            <h2 class="ui center aligned header" th:text="${item.key}"></h2>
+            <div class="ui fluid vertical menu">
+                <a href="" target="_blank" class="item" th:href="@{/news/{id}(id=${news.id})}"
+                   th:each="news : ${item.value}">
+                <span>
+                    <i class="tags purple icon "></i>
+                    <span th:text="${news.title}"></span>
+                    <div class="ui blue basic left pointing label m-mini"
+                         th:text="${#dates.format(news.updateTime,'MM-dd')}">
+                    </div>
+                </span>
+                </a>
+            </div>
+        </th:block>
+    </div>
+</main>
+
+
+<!-- 底部 -->
+<footer th:replace="_fragments :: footer"
+        class="ui secondary m-opacity-mid vertical segment m-massive m-shadow"></footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+
+
+</body>
+</html>

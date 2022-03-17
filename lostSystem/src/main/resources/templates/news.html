@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物详情</title>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(1)" id="top"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInDown">
+</nav>
+
+
+<!-- 中间内容 -->
+<main class="m-large m-container-small animated fadeInUp">
+    <div class="ui container">
+        <div class="ui segment top attached">
+            <div class="ui  horizontal link list ">
+                <div class="item">
+                    <img src="/static/images/cg1.png" alt="" th:src="@{${news.user.avatar}}"
+                         class="ui avatar image img-tiny">
+                    <div class="content">
+                        <a href="" class=" header" th:text="${news.user.nickname}"></a>
+                    </div>
+                </div>
+                <div class="item ">
+                    <i class="calendar icon"></i><span
+                        th:text="${#dates.format(news.updateTime,'yyyy-MM-dd')}"></span>
+                </div>
+                <div class="item">
+                    <i class="eye icon"></i> <span th:text="${news.views}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="ui attached  segment">
+            <!-- 图片区域 -->
+            <img src="/static/images/cg1.png" th:src="@{${news.firstPicture}}" alt="" class="ui fluid image rounded">
+        </div>
+
+        <div class="ui  attached padded segment">
+            <!-- 内容 -->
+            <!--
+            <div class="ui right aligned basic segment">
+                           <div class="ui label blue basic" th:text="${news.flag}">原创</div>
+             </div>
+             -->
+            <h2 class="ui center aligned header" th:text="${news.title}"></h2>
+            <!--中间主要内容-->
+            <div id="content" class="typo js-toc-content typo-selection content m-padded-lr m-massive"
+                 th:utext="${news.content}">
+            </div>
+
+            <!-- 地点 -->
+            <div>
+                <div class="ui blue tag label " th:each="tag : ${news.tags}" th:text="${tag.name}"></div>
+            </div>
+        </div>
+
+        <div class="ui attached message">
+            <!-- 作者信息 -->
+            <div class="ui middle aligned grid">
+                <div class="eleven wide column">
+                    <ul class="list">
+                        <li>作者：<span th:text="${news.user.nickname}"></span></li>
+                        <li>发布时间: <span th:text="${#dates.format(news.updateTime,'yyyy-MM-dd')}"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="ui bottom attached segment" th:if="${news.comment}">
+            <!-- 留言区 -->
+            <div id="comment-container" class="ui blue segment">
+                <div th:fragment="commentList">
+                    <div class="ui threaded comments" style="max-width: 100%;">
+                        <h3 class="ui dividing header">评论</h3>
+                        <div class="comment" th:each="comment : ${comments}">
+                            <a class="avatar">
+                                <img src="/static/images/tx2.jpg" th:src="@{${comment.avatar}}">
+                            </a>
+                            <div class="content">
+                                <a class="author" th:text="${comment.nickname}"></a>
+                                <div class="metadata">
+                                    <span class="date"
+                                          th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                                </div>
+                                <div class="text" th:text="${comment.content}"></div>
+                                <div class="actions">
+                                    <a class="reply"
+                                       th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}"
+                                       data-commentid="1" data-commentnickname="Matt" onclick="reply(this)">回复</a>
+                                </div>
+                            </div>
+
+                            <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                                <div class="comment" th:each="reply : ${comment.replyComments}">
+                                    <a class="avatar">
+                                        <img src="/static/images/tx2.jpg" th:src="@{${reply.avatar}}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="author">
+                                            <span th:text="${reply.nickname}"></span>
+                                            &nbsp;<span th:text="${reply.parentComment.nickname}"
+                                                        class="m-teal"></span>
+                                        </a>
+                                        <div class="metadata">
+                                            <span class="date"
+                                                  th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                                        </div>
+                                        <div class="text" th:text="${reply.content}"></div>
+                                        <div class="actions">
+                                            <a class="reply"
+                                               th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}"
+                                               data-commentid="1" data-commentnickname="Matt"
+                                               onclick="reply(this)">回复</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="comment-form" class="ui form m-large" action="/comments" method="post">
+                <input type="hidden" id="newId" name="news.id" th:value="${news.id}">
+                <input type="hidden" name="parentComment.id" value="-1">
+                <div class="field">
+                    <textarea name="content" placeholder="请输入评论。。"></textarea>
+                </div>
+                <div class="fields">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="nickname" placeholder="姓名">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="envelope icon"></i>
+                            <input type="text" name="email" placeholder="邮箱">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button id="commentpost-btn" type="submit" class="ui blue button">发布</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div class="m-tiny m-fixed m-right-bottom">
+    <div class="ui vertical icon buttons ">
+        <button type="button" class="ui toc blue button">目录</button>
+        <a href="#comment-container" class="ui blue button">留言</a>
+        <a href="#top" class="ui blue button">
+            <i class="chevron up icon"></i>
+        </a>
+    </div>
+</div>
+
+<div class="ui top-container flowing popup transition hidden"
+     style="width: 240px !important;"
+>
+    <ol class="js-toc">
+    </ol>
+</div>
+
+
+<!-- 底部 -->
+<footer th:replace="_fragments :: footer"
+        class="ui secondary m-opacity-mid vertical segment m-massive m-shadow"></footer>
+
+
+<!--js 资源文件 -->
+<th:block th:replace="_fragments :: script"></th:block>
+
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.js-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.js-toc-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.toc.button').popup({
+        popup: $('.top-container.popup'),
+        on: 'click',
+        position: 'left center'
+    });
+
+    //评论表单验证
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'content',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入评论内容'
+                }
+                ]
+            },
+            content: {
+                identifier: 'nickname',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入你的姓名'
+                }]
+            },
+            type: {
+                identifier: 'email',
+                rules: [{
+                    type: 'email',
+                    prompt: '请填写正确的邮箱地址'
+                }]
+            }
+        }
+    });
+
+    //查询该文章的评论信息
+    $(function () {
+        var newsId = document.getElementById("newId").value;
+        console.log("失物ID：" + newsId);
+        $("#comment-container").load("/comments/" + newsId);
+    });
+
+    $('#commentpost-btn').click(function () {
+        var boo = $('.ui.form').form('validate form');
+        if (boo) {
+            console.log('校验成功');
+            postData();
+        } else {
+            console.log('校验失败');
+        }
+    });
+
+    // function postData() {
+    //     $("#comment-container").load(/*[[@{/comments}]]*/"", {
+    //         "parentComment.id": $("[name='parentComment.id']").val(),
+    //         "news.id": $("[name='news.id']").val(),
+    //         "nickname": $("[name='nickname']").val(),
+    //         "email": $("[name='email']").val(),
+    //         "content": $("[name='content']").val()
+    //     }, function (responseTxt, statusTxt, xhr) {
+    //         $(window).scrollTo($('#comment-container'), 500);
+    //         clearContent();
+    //     });
+    // }
+
+    function clearContent() {
+        $("[name='content']").val('');
+        $("[name='parentComment.id']").val(-1);
+        $("[name='content']").attr("placeholder", "请输入评论信息...");
+    }
+
+    function reply(obj) {
+        var commentId = $(obj).data('commentid');
+        var commentNickname = $(obj).data('commentnickname');
+        $("[name='content']").attr("placeholder", "@" + commentNickname).focus();
+        $("[name='parentComment.id']").val(commentId);
+        $(window).scrollTo($('#comment-form'), 500);
+    }
+</script>
+
+</body>
+</html>

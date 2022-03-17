@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/animate.min.css">
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <link rel="stylesheet" href="../../static/css/animate.compat.css">
+</head>
+<body>
+
+<!-- 导航 -->
+<nav th:replace="admin/_fragments :: menu(2)"
+     class="ui secondary attached m-opacity-mid segment m-mini m-shadow animated fadeInUp">
+</nav>
+
+
+<!-- 中间内容 -->
+<br>
+<br>
+<main class="m-large m-container-small animated fadeInUp">
+    <div class="ui container">
+        <div class="ui success message" th:unless="${#strings.isEmpty(msg)}">
+            <i class="close icon"></i>
+            <p th:text="${msg}"></p>
+        </div>
+        <table class="ui table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="type,iterStat : ${page.content}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${type.name}"></td>
+                <td>
+                    <a href="" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini blue button">编辑</a>
+                    <a href="" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red button">删除</a>
+                </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <th colspan="6">
+                    <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+
+                        <a th:href="@{/admin/types(page=${page.number}-1)}" class="item "
+                           th:unless="${page.first}">上一页</a>
+                        <a th:href="@{/admin/types(page=${page.number}+1)}" class="item "
+                           th:unless="${page.last}">下一页</a>
+                    </div>
+                    <a th:href="@{/admin/types/input}" class="ui purple right floated button">新增</a>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<br>
+<br>
+
+
+<!-- 底部 -->
+<footer th:replace="admin/_fragments :: footer" class="ui secondary m-opacity-mid vertical segment m-massive m-shadow">
+</footer>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="../../static/js/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+
+    });
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+</script>
+</body>
+</html>
